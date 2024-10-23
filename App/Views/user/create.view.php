@@ -29,7 +29,7 @@
         class="form-control" name="img_profile" id="name" aria-describedby="helpId" placeholder="" disabled>
     </div>
     <div class="mb-3">
-      <button type="submit" class="btn btn-primary">Desa</button>
+      <button type="submit" class="btn btn-primary">DesInstituta</button>
     </div>
     <div class="mb-3">
       <?php if (isset($params['error']) && !empty($params['error'])): ?>

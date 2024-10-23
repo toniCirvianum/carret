@@ -6,7 +6,8 @@ class userController extends Controller
     public function index()
     {
         if (isset($_SESSION['user_logged']) && $_SESSION['user_logged'] != false) {
-            $this->showProducts();
+            header("Location: /cart/showProducts");
+            exit();
         } else {
             $params['title'] = "Login";
             if (isset($_SESSION['error'])) { //si no hi ha error no fa falta passar res
@@ -123,6 +124,7 @@ class userController extends Controller
                 $_SESSION['user_logged'] = $newUser;
                 //carreguem la vista de l'usuari
                 $this->view();
+                return;
             }
         }
     }
@@ -179,14 +181,5 @@ class userController extends Controller
         }
     }
 
-    public function showProducts()
-    {
-        if (!$_SESSION['products'] || empty($_SESSION['products'])) {
-            echo "anar a una vista per dir que no hi ha productes";
-        } else {
-            $params['title'] = "My Sneakers";
-            $params['products'] = $_SESSION['products'];
-            $this->render('carret/products', $params, 'site');
-        }
-    }
+
 }
