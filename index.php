@@ -1,22 +1,24 @@
 <?php
 
 
-if (!isset($_SESSION)) {
+if(!isset($_SESSION)){
     session_start();
-
-
+    $_SESSION['user_logged']=false;
+    $_SESSION['error']="";
+    $_SESSION['message']="";
 }
+
+include_once("vendor/autoload.php");
+include_once("config.php"); //Donarà error si no s'afegeix aquest fitxer a l'arrel del projecte
+include_once("App/Router.php");
+include_once("App/Models/Orm.php");
+include_once("App/Models/User.php");
+
+include_once("App/Core/Controller.php");
+include_once("App/Core/Mailer.php");
+
+
 use App\Router;
-require_once('App/Router.php');
-require_once('App/Core/Controller.php');
-// require_once('App/Core/Mailer.php');
-// require_once('App/Model/Orm.php');
-// require_once('App/Model/Mp.php');
-// require_once('App/Model/User.php');
-require_once('App/config.php');
-
-
-$_SESSION['user_looged']=$users[0];
 
 
 

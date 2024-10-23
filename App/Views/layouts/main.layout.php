@@ -19,21 +19,34 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
-                <a class="btn btn-primary mx.-auto" href="/home">Inici</a>
-                <a class="btn btn-primary mx.-auto" href="/home">Sobre Nosaltres</a>
-                <a class="btn btn-primary mx.-auto" href="/home">Contacte</a>
-                <a class="btn btn-primary mx.-auto" href="/home">Entra</a>
-                <a class="btn btn-primary mx.-auto" href="/home">REgistre</a>
+                <!-- Logo o nombre del sitio -->
+                <a class="navbar-brand" href="/home">Inici</a>
+                <!-- Botón para colapsar el menú en pantallas pequeñas -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- Elementos del menú -->
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/quisom/">Sobre nosaltres</a>
+                        </li>
 
-
-
-
-                
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="/home/contact/">Contacto</a>
+                        </li>
+                    </ul>
+                    <!-- Botones de Login y Registrarse -->
+                    <div class="d-flex">
+                        <a href="#" class="btn btn-outline-primary me-2">Login</a>
+                        <a href="#" class="btn btn-primary">Registrar-se</a>
+                    </div>
+                </div>
             </div>
         </nav>
+
     </header>
     <main>
         <?php echo $params['content'] ?>

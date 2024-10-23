@@ -57,8 +57,6 @@ class Router
             $this->method = 'index';
         }
         $method = $this->method;
-        echo "metode: ".$method;
-        echo "controller ".$controller;
 
         isset($this->values) ? $c->$method($this->values) : $c->$method();
 

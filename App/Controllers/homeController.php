@@ -12,7 +12,7 @@ class homeController extends Controller {
         $this -> render ('home/contact',$params,'main');
     }
 
-    public function sobreNosotros() {
+    public function quisom() {
         $params['title'] = "Sobre Nosaltres - My Sneakers";
         $this -> render ('home/quisom',$params,'main');
     }
