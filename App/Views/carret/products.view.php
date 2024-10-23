@@ -1,5 +1,11 @@
 
 <body>
+<style>
+        .card-img-top {
+            height: 200px; /* Puedes ajustar esta altura según tus necesidades */
+            object-fit: cover; /* Asegura que la imagen se ajuste sin distorsionarse */
+        }
+    </style>
     <div class="container mt-5">
         <div class="row">
             <!-- Producto 1 -->

@@ -1,6 +1,5 @@
 <?php
-
-define('URL',$_SERVER['REQUEST_URI']);
+if (!isset(URL)) define('URL',$_SERVER['REQUEST_URI']);
 
 $products = [
     [

@@ -1,14 +1,12 @@
 <?php
 
-
 class userController extends Controller
 {
 
     public function index()
     {
         if (isset($_SESSION['user_logged']) && $_SESSION['user_logged'] != false) {
-            $params['title'] = "My App";
-            $this->render("user/user", $params, "site");
+            $this->showProducts();
         } else {
             $params['title'] = "Login";
             if (isset($_SESSION['error'])) { //si no hi ha error no fa falta passar res
@@ -125,8 +123,6 @@ class userController extends Controller
                 $_SESSION['user_logged'] = $newUser;
                 //carreguem la vista de l'usuari
                 $this->view();
-
-
             }
         }
     }
@@ -143,6 +139,7 @@ class userController extends Controller
         //esborrem la variable de sessio user_logged i la posem a false
         unset($_SESSION['user_logged']);
         $_SESSION['user_logged'] = false;
+        //Esborrar altres variables de sessio
         $this->index();
     }
 
@@ -179,6 +176,17 @@ class userController extends Controller
             $_SESSION['error'] = "Error al verificar credencials per mail";
             $this->index();
             return;
+        }
+    }
+
+    public function showProducts()
+    {
+        if (!$_SESSION['products'] || empty($_SESSION['products'])) {
+            echo "anar a una vista per dir que no hi ha productes";
+        } else {
+            $params['title'] = "My Sneakers";
+            $params['products'] = $_SESSION['products'];
+            $this->render('carret/products', $params, 'site');
         }
     }
 }

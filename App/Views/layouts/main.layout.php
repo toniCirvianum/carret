@@ -15,6 +15,18 @@
         rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
         crossorigin="anonymous" />
+
+    <style>
+        body {
+            background-image: url('../../../Public/Assets/home/fonscolor.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 </head>
 
 <body>
@@ -40,8 +52,8 @@
                     </ul>
                     <!-- Botones de Login y Registrarse -->
                     <div class="d-flex">
-                        <a href="#" class="btn btn-outline-primary me-2">Login</a>
-                        <a href="#" class="btn btn-primary">Registrar-se</a>
+                        <a href="/user/index" class="btn btn-outline-primary me-2">Login</a>
+                        <a href="/user/create" class="btn btn-primary">Registrar-se</a>
                     </div>
                 </div>
             </div>

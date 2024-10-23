@@ -15,20 +15,32 @@
         rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
         crossorigin="anonymous" />
+
+    <style>
+        body {
+            background-image: url('../../../Public/Assets/home/fons.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 </head>
 
 <body>
     <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
-                <a class="btn btn-primary mx.-auto" href="/mp/index">Moduls</a>
+                <a class="btn btn-primary mx.-auto" href="/mp/index">Inici</a>
                 <?php
-                    if (isset($_SESSION['user'])) {
-                        echo '<a class="btn btn-primary mx.-auto" href="/user/logout">Logout</a>';
-                    }
+                if (isset($_SESSION['user_logged'])) {
+                    echo '<a class="btn btn-primary mx.-auto" href="/user/logout">Logout</a>';
+                }
 
                 ?>
-                
+
 
             </div>
         </nav>
