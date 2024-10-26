@@ -19,7 +19,15 @@
         }
     </style>
     <div class="container mt-5">
+
         <div class="row">
+            <?php
+            if (isset($params['message']) && !empty($params['message'])) {
+                echo '<div class="alert alert-success alert-dismissible fade show" role="alert" id="autoCloseAlert">';
+                echo $params['message'];
+                echo '</div>';
+            }
+            ?>
             <!-- Tarjeta de producte -->
             <?php foreach ($params['products'] as $product): ?>
                 <div class="col-md-4 flex-shrink-0">
@@ -31,10 +39,11 @@
                                 <p class="card-text"><?php echo $product['description']; ?></p>
                                 <p class="card-text"><?php echo number_format($product['price'], 2); ?>€</p>
                                 <input type="hidden" name="id" value="<?php echo $product['id']; ?>">
-                                <input type="submit" value="Afegir" class="btn btn-primary">
+                                <input type="submit" value="Afegir" class="btn btn-success">
                                 <div class="mb-3">
                                     <p> </p>
                                     <?php
+                                    //mostra missatge d'error sobre la tarjeta de producte
                                     if (isset($params['prod_id']) && $params['prod_id'] == $product['id'])
                                         if (isset($params['error']) && !empty($params['error'])) {
                                             echo '<div class="alert alert-danger alert-dismissible fade show error-message">';

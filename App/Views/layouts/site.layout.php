@@ -16,7 +16,7 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
         crossorigin="anonymous" />
 
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <style>
         body {
@@ -29,28 +29,33 @@
             padding: 0;
         }
     </style>
+    <script>
+            // Per amagar l'alerta passats 5 segons
+            setTimeout(function() {
+                var alertElement = document.getElementById('autoCloseAlert');
+                if (alertElement) {
+                    var alert = new bootstrap.Alert(alertElement);
+                    alert.close(); // Tanca l'alerta
+                }
+            }, 5000); // 5000 ms = 5 segons
+        </script>
 </head>
 
 <body>
     <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
-                <a class="btn btn-primary" href="/mp/index">Inici</a>
-                <a class="btn btn-primary" href="#"> Veure Carret &nbsp   
-                    <!-- <i class="bi bi-cart"></i> -->
+                <a class="btn btn-primary" href="/cart/index">Inici</a>
+                <a class="btn btn-primary" href="/cart/showCarret"> Veure Carret &nbsp
                     <!-- Mostrar el número de items en el carrito -->
                     <span class="badge bg-danger">
-                        <?php echo isset($params['cart_items']) ? $params['cart_items'] : 0; ?></span>
-                    <!-- <span class="badge bg-danger">5</span> -->
+                        <?php echo isset($params['cart_items']) && !empty($params['cart_items']) ? $params['cart_items'] : 0; ?></span>
                 </a>
                 <?php
                 if (isset($_SESSION['user_logged'])) {
                     echo '<a class="btn btn-primary mx.-auto" href="/user/logout">Logout</a>';
                 }
-
                 ?>
-
-
             </div>
         </nav>
     </header>

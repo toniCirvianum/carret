@@ -1,10 +1,13 @@
 <?php
 use App\Models\Orm;
+
+
 class Cart extends Orm {
     public function __construct(){
+        parent::__construct('cart');
         // Inicialitzem sino existeix
-        if (!isset($_SESSION['cart'])) {
-            $_SESSION['cart'] = array();
+        if (!isset($_SESSION['id_cart'])) {
+            $_SESSION['id_cart'] = 0;
         }
     }
 
@@ -14,7 +17,7 @@ class Cart extends Orm {
         if (isset($_SESSION['cart'][$product['id']])) {
             $_SESSION['cart'][$product['id']]['qty'] += 1;
         } else {
-            // Afegimel producte
+            // Afegim el producte
             $_SESSION['cart'][$product['id']]= array(
                 'name'  => $product['name'],
                 'description' => $product['description'],
@@ -26,11 +29,6 @@ class Cart extends Orm {
         }
 
 
-    }
-
-    // Retorna els productes
-    public function get_cart_contents() {
-        return $_SESSION['cart'];
     }
 
     // Calcula el total
@@ -50,12 +48,11 @@ class Cart extends Orm {
         unset($_SESSION['cart'][$id]);
     }
 
-    public function update_product($id, $qty) {
-        $_SESSION['cart'][$id]['qty'] = $qty;
-    }
-
-    public function reset() {
-        unset($_SESSION['cart']);
+    public function update_qty($id, $qty) {
+        $_SESSION['cart'][$id]['qty'] += $qty;
+        if ($_SESSION['cart'][$id]['qty'] <= 0) {
+            $this->remove_product($id);
+        }
     }
 
     public function get_cart_items() {

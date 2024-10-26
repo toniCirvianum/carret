@@ -47,7 +47,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="/home/contact/">Contacto</a>
+                            <a class="nav-link" href="/home/contact/">Contacte</a>
                         </li>
                     </ul>
                     <!-- Botones de Login y Registrarse -->

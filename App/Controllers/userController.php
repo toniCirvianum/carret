@@ -5,7 +5,7 @@ class userController extends Controller
 
     public function index()
     {
-        if (isset($_SESSION['user_logged']) && $_SESSION['user_logged'] != false) {
+        if (isset($_SESSION['user_logged'])) {
             header("Location: /cart/showProducts");
             exit();
         } else {
@@ -132,6 +132,7 @@ class userController extends Controller
     public function view()
     {
         //carrega el user View
+
         $this->index();
         return;
     }
@@ -140,7 +141,10 @@ class userController extends Controller
     {
         //esborrem la variable de sessio user_logged i la posem a false
         unset($_SESSION['user_logged']);
-        $_SESSION['user_logged'] = false;
+
+        unset($_SESSION['cart']);
+        unset($_SESSION['cart_items']);
+        unset($_SESSION['cart_total']);
         //Esborrar altres variables de sessio
         $this->index();
     }
