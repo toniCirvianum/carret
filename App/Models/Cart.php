@@ -62,4 +62,10 @@ class Cart extends Orm {
         }   
         return $items;
     }
+
+    public function validateCart() {
+        $date = date('Y-m-d H:i:s');
+        echo $date;
+        
+    }
 }

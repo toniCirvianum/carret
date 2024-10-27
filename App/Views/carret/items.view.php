@@ -23,7 +23,7 @@
     ?>
     <div class="d-flex justify-content-between align-items-center">
         <h2 class="mb-0">Resum del carret</h2>
-        <a href="" class="btn btn-success">Validar carret</a>
+        <a href="/cart/validateCarret" class="btn btn-success">Validar carret</a>
     </div>
     <hr>
 

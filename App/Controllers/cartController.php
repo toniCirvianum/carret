@@ -13,23 +13,19 @@ class cartController extends Controller
             exit();
         }
     }
-    private function userLogged() {
+    private function userLogged()
+    {
         if (isset($_SESSION['user_logged'])) {
             return true;
         } else {
-            return false;
+            header('Location: /');
+            exit();
         }
     }
     public function showProducts()
     {
-        // echo "<pre>";
-        // print_r($_SESSION['cart_items']);
-        // echo "</pre>";
-        if (!$this->userLogged()) {
-            header('Location: /');
-            exit();
-        }
-        
+        $this->userLogged();
+
         if (!$_SESSION['products'] && empty($_SESSION['products'])) {
             //mostra missatge dient que no hi ha productes
             $params['title'] = "Products";
@@ -50,10 +46,8 @@ class cartController extends Controller
 
     function addItemsToCart()
     {
-        if (!$this->userLogged()) {
-            header('Location: /');
-            exit();
-        }
+        $this->userLogged();
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (empty($_POST['id'])) {
                 $_SESSION['prod_id'] = $_POST['id'];
@@ -81,10 +75,8 @@ class cartController extends Controller
 
     public function showCarret()
     {
-        if (!$this->userLogged()) {
-            header('Location: /');
-            exit();
-        }
+        $this->userLogged();
+
         $c = new Cart();
         $params['cart'] = $c->getAll();
         $params['cart_total'] = $c->get_cart_total();
@@ -95,19 +87,60 @@ class cartController extends Controller
         $this->render('carret/items', $params, 'site');
     }
 
-    public function updateCarret( )
+    public function updateCarret()
     {
+        $this->userLogged();
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $c = new Cart();
             if (isset($_POST['add']) && !empty($_POST['add'])) {
-                $c-> update_qty($_POST['product_id'], 1);
+                $c->update_qty($_POST['product_id'], 1);
             }
             if (isset($_POST['remove']) && !empty($_POST['remove'])) {
-                $c-> update_qty($_POST['product_id'], -1);
+                $c->update_qty($_POST['product_id'], -1);
             }
             $_SESSION['message'] = "Carret actualitzat";
             $this->showCarret();
             return;
         }
     }
+
+    public function validateCarret()
+    {
+        $this->userLogged();
+        if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
+            $_SESSION['message'] = "No es pot validar elcarret perquè esta buit";
+            $this->showCarret();
+            return;
+        }
+        $hc = new HistoryCart();
+        $hc -> addElement($_SESSION['cart'],$_SESSION['user_logged']['id']);
+        unset($_SESSION['cart']);
+        unset($_SESSION['cart_items']);
+        unset($_SESSION['cart_total']);
+        $_SESSION['message'] = "Carret validat";
+
+        $this->showCarret();
+        return;
+    }
+
+    public function history()
+    {
+        $this->userLogged();
+        $hc = new HistoryCart();
+        $params['history'] = $hc->getHistoricalByUserId($_SESSION['user_logged']['id']);
+        // echo '<pre>';
+        // echo "Mostrant la variable de sessió history_cart de l'usuari ".$_SESSION['user_logged']['id'];
+        // print_r($params['history']);
+        // echo '</pre>';
+        $params['title'] = "Historial de compres";
+        $this->render('carret/historical', $params, 'site');
+        // echo '<pre>';
+        // echo "Mostrant la variable de sessió history_cart";
+        // print_r($_SESSION['history_cart']);
+        // echo '</pre>';
+;
+
+    }
+        
+    
 }

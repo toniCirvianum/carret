@@ -51,9 +51,11 @@
                     <span class="badge bg-danger">
                         <?php echo isset($params['cart_items']) && !empty($params['cart_items']) ? $params['cart_items'] : 0; ?></span>
                 </a>
+
                 <?php
                 if (isset($_SESSION['user_logged'])) {
                     echo '<a class="btn btn-primary mx.-auto" href="/user/logout">Logout</a>';
+                    echo '<a class="btn btn-primary mx.-auto" href="/cart/history">Veure Historic</a>';
                 }
                 ?>
             </div>
