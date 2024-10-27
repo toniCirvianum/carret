@@ -18,7 +18,7 @@
             /* Ajusta el ancho según el diseño */
         }
     </style>
-    <div class="container mt-5">
+    <div class="container mt-50">
 
         <div class="row">
             <?php

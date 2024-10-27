@@ -27,7 +27,7 @@ class userController extends Controller
         //si no es post no fa res
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             //si no passem res mostra error
-            if (empty($_POST['name']) || empty($_POST['username']) || empty($_POST['pass']) || empty($_POST['mail'])) {
+            if (empty($userInfo['name']) || empty($userInfo['username']) || empty($userInfo['pass']) || empty($userInfo['mail'])) {
                 $_SESSION['error'] = "Falten dades";
                 $this->create();
                 return;
@@ -54,6 +54,8 @@ class userController extends Controller
                 "verificat" => false,
                 "img_profile" => "A.jpg"
             ];
+
+
             //Afegim l'usuari al model
             $user->create($newuser);
             //variable per desar el nou usuari registrat
@@ -77,6 +79,7 @@ class userController extends Controller
     public function create()
     //genera la vista per crear usuari
     {
+        userLogged();
         $params['title'] = "Nou usuari";
         if (isset($_SESSION['error'])) { //si no hi ha error no fa falta passar res
             $params['error'] = $_SESSION['error'];
@@ -132,7 +135,7 @@ class userController extends Controller
     public function view()
     {
         //carrega el user View
-
+        userLogged();
         $this->index();
         return;
     }
@@ -185,5 +188,81 @@ class userController extends Controller
         }
     }
 
+    public function edit()
+    {
+        userLogged();
+        $params['title'] = "Edit User";
+        $params['user'] = $_SESSION['user_logged'];
+        $params['user_image'] = $_SESSION['user_logged']['img_profile'];
+        $params['error'] = isset($_SESSION['error']) ? $_SESSION['error'] : null;
+        unset($_SESSION['error']);
+        $params['message'] = isset($_SESSION['message']) ? $_SESSION['message'] : null;
+        unset($_SESSION['message']);
+        $this->render("user/edit", $params, "site");
+        return;
+    }
 
+    private function validateUserInput($userInfo)
+    {
+            if (!validateUsername($userInfo['username'])) {
+            $_SESSION['error'] = "El nom d'usuari ha de tenir com a mínim 5 caràcters i només pot contenir lletres i números";
+            return false;
+        }
+
+        if (!empty($userInfo['pass'])) {
+            if (!validatePassword($userInfo['pass'])) {
+                $_SESSION['error'] = "La contrasenya ha de tenir com a mínim 8 caràcters, una lletra minúscula, una lletra majúscula i un número";
+                return false;
+            }
+        }
+        if (!validatePassword($userInfo['pass'])) {
+            $_SESSION['error'] = "La contrasenya ha de tenir com a mínim 8 caràcters, una lletra minúscula, una lletra majúscula i un número";
+            return false;
+        }
+
+        if (!validateMail($userInfo['mail'])) {
+            $_SESSION['error'] = "El mail no és correcte";
+            return false;
+        }
+
+        $u = new User();
+        if ($u->getUserByUsername($userInfo['username']) != null) {
+            $_SESSION['error'] = "El nom d'usuari ja existeix";
+            return false;
+        }
+        return true;
+    }
+
+    public function updateUser()
+    {
+        //si no es post no fa res
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+           
+            if ($this->validateUserInput($_POST) == false) {
+                $this->edit();
+                return;
+            }
+            $user = new User();
+            $userUpdated = [
+                'id' => $_SESSION['user_logged']['id'],
+                'name' => $_POST['name'],
+                'username' => $_POST['username'],
+                'password' => empty($_POST['pass']) ? $_SESSION['user_logged']['password'] : $_POST['pass'],
+                'mail' => $_POST['mail'],
+                'admin' => $_SESSION['user_logged']['admin'],
+                'token' => $_SESSION['user_logged']['token'],
+                'verificat' => $_SESSION['user_logged']['verificat'],
+                'img_profile' => empty($_POST['img_profile']) ? $_SESSION['user_logged']['img_profile'] : $_POST['img_profile']
+            ];
+            echo "<pre>";
+            print_r($userUpdated);
+            echo "</pre>";
+
+            $user->updateItemById($userUpdated);
+            $_SESSION['user_logged'] = $userUpdated;
+            $_SESSION['message'] = "Usuari actualitzat";
+            $this->edit();
+            return;
+        }
+    }
 }

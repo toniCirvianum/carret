@@ -9,6 +9,7 @@ if(!isset($_SESSION)){
 
 include_once("vendor/autoload.php");
 include_once("config.php"); //Donarà error si no s'afegeix aquest fitxer a l'arrel del projecte
+include_once("App/Helpers/functions.php");
 include_once("App/Router.php");
 include_once("App/Models/Orm.php");
 include_once("App/Models/User.php");

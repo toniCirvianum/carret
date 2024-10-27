@@ -25,7 +25,7 @@ class cartController extends Controller
     public function showProducts()
     {
         $this->userLogged();
-
+        $params['user_image']=$_SESSION['user_logged']['img_profile'];
         if (!$_SESSION['products'] && empty($_SESSION['products'])) {
             //mostra missatge dient que no hi ha productes
             $params['title'] = "Products";
@@ -84,6 +84,7 @@ class cartController extends Controller
         $params['cart_items'] = $c->get_cart_items();
         $params['message'] = $_SESSION['message'];
         unset($_SESSION['message']);
+        $params['user_image']=$_SESSION['user_logged']['img_profile'];
         $this->render('carret/items', $params, 'site');
     }
 

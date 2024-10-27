@@ -43,28 +43,39 @@
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <nav class="navbar navbar-expand-lg fixed-top bg-body-tertiary">
             <div class="container-fluid">
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item"><a class="btn btn-primary me-2" href="/cart/index">Inici</a> </li>
-                        <li class="nav-item"><a class="btn btn-primary me-2" href="/cart/showCarret"> Veure Carret &nbsp
+                        <li class="nav-item"><a class="btn btn-outline-primary me-2" href="/cart/showCarret"> Veure Carret &nbsp
                                 <!-- Mostrar el número de items en el carrito -->
-                                <span class="badge bg-danger">
+                                <span class="badge bg-warning">
                                     <?php echo isset($params['cart_items']) && !empty($params['cart_items']) ? $params['cart_items'] : 0; ?></span>
                             </a></li>
-                        <li class="nav-item"><a class="btn btn-primary me-2" href="/cart/history">Veure Historic</a></li>
+
+                        <li class="nav-item"><a class="btn btn-outline-primary me-2" href="/cart/history">Veure Historic</a></li>
                     </ul>
                 </div>
-                <?php
-                if (isset($_SESSION['user_logged'])) {
-                    echo '<a class="btn btn-primary mx.-auto" href="/user/logout">Logout</a>';
-                }
-                ?>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="btn btn-primary me-2" href="/user/edit"><i class="bi bi-person-fill"></i></a>
+                        </li>
+                        <li class="nav-item"><a class="btn btn-primary mx.-auto" href="/user/logout">Logout</a></li>
+                        <li class="nav-item ms-2">
+                            <img src="../../../Public/Assets/user/<?=$params['user_image']; ?>" 
+                            class="rounded-circle" style="width: 40px; height: 40px;">
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </nav>
     </header>
-    <main>
-        <?php echo $params['content'] ?>
+    <main style="padding-top: 70px; ">
+        <div class="container mt-5">
+            <?php echo $params['content'] ?>
+        </div>
     </main>
     <footer>
         <!-- place footer here -->

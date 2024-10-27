@@ -60,8 +60,10 @@
         </nav>
 
     </header>
-    <main>
-        <?php echo $params['content'] ?>
+    <main >
+        <div >
+            <?php echo $params['content'] ?>
+        </div>
     </main>
     <footer>
         <!-- place footer here -->
