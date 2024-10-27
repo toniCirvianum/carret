@@ -30,35 +30,37 @@
         }
     </style>
     <script>
-            // Per amagar l'alerta passats 5 segons
-            setTimeout(function() {
-                var alertElement = document.getElementById('autoCloseAlert');
-                if (alertElement) {
-                    var alert = new bootstrap.Alert(alertElement);
-                    alert.close(); // Tanca l'alerta
-                }
-            }, 5000); // 5000 ms = 5 segons
-        </script>
+        // Per amagar l'alerta passats 5 segons
+        setTimeout(function() {
+            var alertElement = document.getElementById('autoCloseAlert');
+            if (alertElement) {
+                var alert = new bootstrap.Alert(alertElement);
+                alert.close(); // Tanca l'alerta
+            }
+        }, 5000); // 5000 ms = 5 segons
+    </script>
 </head>
 
 <body>
     <header>
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-fluid">
-                <a class="btn btn-primary" href="/cart/index">Inici</a>
-                <a class="btn btn-primary" href="/cart/showCarret"> Veure Carret &nbsp
-                    <!-- Mostrar el número de items en el carrito -->
-                    <span class="badge bg-danger">
-                        <?php echo isset($params['cart_items']) && !empty($params['cart_items']) ? $params['cart_items'] : 0; ?></span>
-                </a>
-
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item"><a class="btn btn-primary me-2" href="/cart/index">Inici</a> </li>
+                        <li class="nav-item"><a class="btn btn-primary me-2" href="/cart/showCarret"> Veure Carret &nbsp
+                                <!-- Mostrar el número de items en el carrito -->
+                                <span class="badge bg-danger">
+                                    <?php echo isset($params['cart_items']) && !empty($params['cart_items']) ? $params['cart_items'] : 0; ?></span>
+                            </a></li>
+                        <li class="nav-item"><a class="btn btn-primary me-2" href="/cart/history">Veure Historic</a></li>
+                    </ul>
+                </div>
                 <?php
                 if (isset($_SESSION['user_logged'])) {
                     echo '<a class="btn btn-primary mx.-auto" href="/user/logout">Logout</a>';
-                    echo '<a class="btn btn-primary mx.-auto" href="/cart/history">Veure Historic</a>';
                 }
                 ?>
-            </div>
         </nav>
     </header>
     <main>
