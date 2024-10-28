@@ -26,6 +26,10 @@ class cartController extends Controller
     {
         $this->userLogged();
         $params['user_image']=$_SESSION['user_logged']['img_profile'];
+        // echo "<pre>";
+        // print_r($_SESSION['user_logged']);
+        // echo "</pre>";
+        echo $params['user_image'] ."<br>";
         if (!$_SESSION['products'] && empty($_SESSION['products'])) {
             //mostra missatge dient que no hi ha productes
             $params['title'] = "Products";
@@ -129,18 +133,9 @@ class cartController extends Controller
         $this->userLogged();
         $hc = new HistoryCart();
         $params['history'] = $hc->getHistoricalByUserId($_SESSION['user_logged']['id']);
-        // echo '<pre>';
-        // echo "Mostrant la variable de sessió history_cart de l'usuari ".$_SESSION['user_logged']['id'];
-        // print_r($params['history']);
-        // echo '</pre>';
+        $params['user_image']=$_SESSION['user_logged']['img_profile'];
         $params['title'] = "Historial de compres";
         $this->render('carret/historical', $params, 'site');
-        // echo '<pre>';
-        // echo "Mostrant la variable de sessió history_cart";
-        // print_r($_SESSION['history_cart']);
-        // echo '</pre>';
-;
-
     }
         
     

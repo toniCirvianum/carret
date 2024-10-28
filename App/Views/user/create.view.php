@@ -26,7 +26,7 @@
     <div class="mb-3">
       <label for="name" class="form-label">Imatge de perfil</label>
       <input type="file"
-        class="form-control" name="img_profile" id="name" aria-describedby="helpId" placeholder="" disabled>
+        class="form-control" name="img_profile" id="name" aria-describedby="helpId" placeholder="">
     </div>
     <div class="mb-3">
       <button type="submit" class="btn btn-primary">Desa</button>

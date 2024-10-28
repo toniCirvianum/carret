@@ -55,6 +55,9 @@
                             </a></li>
 
                         <li class="nav-item"><a class="btn btn-outline-primary me-2" href="/cart/history">Veure Historic</a></li>
+                        <li>
+                         <p>nom imatge: <?=$params['user_image'];  ?></p>
+                        </li>
                     </ul>
                 </div>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -62,10 +65,11 @@
                         <li class="nav-item">
                             <a class="btn btn-primary me-2" href="/user/edit"><i class="bi bi-person-fill"></i></a>
                         </li>
+                        
                         <li class="nav-item"><a class="btn btn-primary mx.-auto" href="/user/logout">Logout</a></li>
                         <li class="nav-item ms-2">
-                            <img src="../../../Public/Assets/user/<?=$params['user_image']; ?>" 
-                            class="rounded-circle" style="width: 40px; height: 40px;">
+                            <img src="../../../Public/Assets/user/<?=$params['user_image'];  ?>" 
+                            class="rounded-circle" style="width: 40px; height: 40px;" alt="imatge usuari">
                         </li>
                     </ul>
                 </div>
