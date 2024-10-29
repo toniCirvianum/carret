@@ -39,7 +39,13 @@
                                 <p class="card-text"><?php echo $product['description']; ?></p>
                                 <p class="card-text"><?php echo number_format($product['price'], 2); ?>€</p>
                                 <input type="hidden" name="id" value="<?php echo $product['id']; ?>">
+                                <div class="content-center">
                                 <input type="submit" value="Afegir" class="btn btn-success">
+                                <?php if ($params['admin']) :?>
+                                    <a href="" class="btn btn-warning"> Editar </a>
+                                    <a href="/producte/deleteProducte/<?=$product['id'] ?>" class="btn btn-danger"> Eliminar </a>
+                                <?php endif; ?>
+                                </div>
                                 <div class="mb-3">
                                     <p> </p>
                                     <?php

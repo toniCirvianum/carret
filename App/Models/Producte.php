@@ -10,7 +10,7 @@ class Producte extends Orm
     {
         parent::__construct('products');
         if (!isset($_SESSION['id_product'])) {
-            $_SESSION['id_product'] = 10;
+            $_SESSION['id_product'] = 9;
         }
     }
 

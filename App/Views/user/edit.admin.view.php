@@ -1,6 +1,6 @@
 <div class="signin col-11 col-md-9 col-lg-7 col-xl-5 mx-auto border p-4 bg-light mt-4">
-  <form action="/user/updateUser" method="post" enctype="multipart/form-data">
-    <h2 class="text-success">Edita els camps d'usuari</h2>
+  <form action="/admin/updateUser" method="post" enctype="multipart/form-data">
+    <h2 class="text-success">Estàs editant l'usuari <?=$params['user']['name'];?></h2>
     <div class="mb-3">
       <label for="name" class="form-label">Name</label>
       <input type="text"
@@ -22,6 +22,8 @@
       <input type="mail"
         class="form-control" name="mail" id="mail" aria-describedby="helpId" value="<?= $params['user']['mail'] ?>">
     </div>
+    <input type="hidden"
+       name="id"  value="<?= $params['user']['id'] ?>">
     <div class="mb-3">
       <label for="name" class="form-label">Imatge de perfil: </label>
       <img src="../../../Public/Assets/user/<?= $params['user']['img_profile'];  ?>"
@@ -32,7 +34,7 @@
         class="form-control" value="Actualitzar iamtge" name="img_profile" id="name" aria-describedby="helpId" placeholder="">
     </div>
     <div class="mb-3">
-      <button type="submit" class="btn btn-primary">Desa els canvis</button>
+      <button type="submit" class="btn btn-primary">Actualitzar usuari</button>
     </div>
     <div class="mb-3">
       <?php if (isset($params['error']) && !empty($params['error'])): ?>

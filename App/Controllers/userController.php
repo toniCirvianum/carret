@@ -18,7 +18,7 @@ class userController extends Controller
                 $params['message'] = $_SESSION['message'];
                 unset($_SESSION['message']);
             }
-            if(isset($_SESSION['user_image'])){ //si no hi ha imatge no fa falta passar res
+            if (isset($_SESSION['user_image'])) { //si no hi ha imatge no fa falta passar res
                 $params['user_image'] = $_SESSION['user_image'];
             }
             $this->render("user/login", $params, "main");
@@ -37,46 +37,19 @@ class userController extends Controller
                 return;
             }
             //validem dades
-            if ($this->validateUserInput($_POST) == false) {
+            if (validateUserInput($_POST) == false) {
                 $this->create();
                 return;
-            }
-            $img_default = false; //variable per saber si s'assigna imatge per defecte
-            //si no es passa imatge de perfil s'assigna la per defecte
-            if (!isset($_FILES['img_profile']) || $_FILES['img_profile']['size'] == 0) {
-                $filename = "default.jpg";
-                $img_default = true;
             }
             $name = $_POST['name'];
             $username = $_POST['username'];
             $pass = $_POST['pass'];
             $mail = $_POST['mail'];
-            //si es puja imatge es comprova si es valida
-            if (!$img_default) {
-                //si hi ha un error al pujar la imatge torna a cridar al create
-                $filename = $this->getImage($_FILES['img_profile'], $username,'user');
-                echo "<pre>";
-            echo "img_default: " . $img_default . "<br>";
-            echo "filename al if: " . $filename . "<br>"; 
-            echo "</pre>";
-                if (!$filename) {
-                    echo "error al pujar la imatge torno a cridar al create";
-                    $this->create();
-                    return;
-                }
-            }
-            //si no hi ha error al pujar la imatge
-            //la imatge te el nom d'usuari
-            $filename = $img_default ? $filename : $this->getImage($_FILES['img_profile'], $username,'user');
-            echo "<pre>";
-            echo "img_default: " . $img_default . "<br>";
-            echo "filename: " . $filename . "<br>"; 
-            echo "filename metodo getImage: " . $this->getImage($_FILES['img_profile'], $username,'user') . "<br>";
-            echo "</pre>";
+            $image_profile = getImage($_FILES['img_profile'], $username, 'user');
             $user = new User(); //instanciem la classe User
             //Creem un nou usuari
             $newuser = [
-                "id" => $_SESSION['id_user']++,
+                "id" => ++$_SESSION['id_user'],
                 "name" => $name,
                 "username" => $username,
                 "password" => $pass,
@@ -84,15 +57,14 @@ class userController extends Controller
                 "admin" => false,
                 "token" => $user->generaToken(), //Falta la funcio per generar token
                 "verificat" => true,
-                "img_profile" => $filename
+                "img_profile" => $image_profile
             ];
             //Afegim l'usuari al model
-            $user -> create($newuser);
+            $user->create($newuser);
             $this->view();
             return;
         }
     }
-
 
     public function create()
     //genera la vista per crear usuari
@@ -109,7 +81,6 @@ class userController extends Controller
         $this->render("user/create", $params, "main");
     }
 
-
     public function login()
     //comprova si les credencials son correctes
     {
@@ -123,11 +94,7 @@ class userController extends Controller
             }
             $username = $_POST['username'];
             $pass = $_POST['pass'];
-            //comprovem user i password
-            // echo "<pre>";
-            // echo "username: " . $username . " pass: " . $pass. "<br>";
-            // echo print_r($_SESSION['users']);
-            // echo "</pre>";
+
             $userModel = new User();
             $result = $userModel->loginOk($username, $pass);
             //Si les credencials no son correctes mostra error
@@ -175,43 +142,6 @@ class userController extends Controller
         $this->index();
     }
 
-    public function verify($values = null)
-    //Funcio que rep el mail de verificacio
-    {
-        
-        // echo "estic al verify";
-        // echo "<pre>";
-        // print_r($values);
-        // echo "</pre>";
-        //Gaurdme el parametres que envia el mail
-        $username = $values[0];
-        $token = $values[1];
-        // si no arribem parametres
-        if (is_null($username) || is_null($token)) {
-            $_SESSION['error'] = "Error al verificar credencials per mail";
-            $this->index();
-            return;
-        }
-        //comprovem si els parametres que s'han enviat son correctes
-        if ($username == $_SESSION['user_registered']['username'] && $token == $_SESSION['user_registered']['token']) {
-            $_SESSION['user_registered']['verificat'] = true;
-            //actualitzem el model amb l'usuari verificat
-            $userModel = new User();
-            $userModel->updateItemById($_SESSION['user_registered']);
-            //esborrem la variable de sessio user_registered
-            unset($_SESSION['user_registered']);
-            //cridem a la vista d'usuari verificat
-            $params['title'] = "Usuari verificat";
-            $this->render("user/verified", $params, "main");
-            return;
-        } else {
-            //si les credencials no son correctes
-            $_SESSION['error'] = "Error al verificar credencials per mail";
-            $this->index();
-            return;
-        }
-    }
-
     public function edit()
     //genera la vista per editar usuari
     {
@@ -227,46 +157,13 @@ class userController extends Controller
         return;
     }
 
-    private function validateUserInput($userInfo)
-    //metodes per valdia info usuari
-    {
-        if (!validateUsername($userInfo['username'])) {
-            $_SESSION['error'] = "El nom d'usuari ha de tenir com a mínim 5 caràcters i només pot contenir lletres i números";
-            return false;
-        }
-
-        if (!empty($userInfo['pass'])) {
-            if (!validatePassword($userInfo['pass'])) {
-                $_SESSION['error'] = "La contrasenya ha de tenir com a mínim 8 caràcters, una lletra minúscula, una lletra majúscula i un número";
-                return false;
-            }
-        }
-        if (!validatePassword($userInfo['pass'])) {
-            $_SESSION['error'] = "La contrasenya ha de tenir com a mínim 8 caràcters, una lletra minúscula, una lletra majúscula i un número";
-            return false;
-        }
-
-        if (!validateMail($userInfo['mail'])) {
-            $_SESSION['error'] = "El mail no és correcte";
-            return false;
-        }
-
-        $u = new User();
-        if ($u->getUserByUsername($userInfo['username']) != null) {
-            $_SESSION['error'] = "El nom d'usuari ja existeix";
-            return false;
-        }
-
-        return true;
-    }
-
     public function updateUser()
     //metode per actualitzar info d'usuari
     {
         //si no es post no fa res
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-            if ($this->validateUserInput($_POST) == false) {
+            if (validateUserInput($_POST) == false) {
                 $this->edit();
                 return;
             }
@@ -280,11 +177,15 @@ class userController extends Controller
                 'admin' => $_SESSION['user_logged']['admin'],
                 'token' => $_SESSION['user_logged']['token'],
                 'verificat' => $_SESSION['user_logged']['verificat'],
-                'img_profile' => empty($_POST['img_profile']) ? $_SESSION['user_logged']['img_profile'] : $_POST['img_profile']
+                'img_profile' //sino es passa cap imatge es queda la que ja tenim i si es passa es guarda la nova
+                => $_FILES['img_profile']['size']==0 ? $_SESSION['user_logged']['img_profile'] : getImage($_FILES['img_profile'], $_POST['username'], 'user')
             ];
-            echo "<pre>";
-            print_r($userUpdated);
-            echo "</pre>";
+            //Si es modifica el nom d'usuari també modifiquem el nom de la imatge de perfil
+            if ($userUpdated['img_profile'] != $userUpdated['username']) {
+                //si s'ha actualitzat la imatge de perfil esborrem la antiga
+                rename(__DIR__ . "/../../Public/Assets/user/" . $userUpdated['img_profile'], __DIR__ . "/../../Public/Assets/user/" . $userUpdated['username'] . ".jpg");
+                $userUpdated['img_profile'] = $userUpdated['username'] . ".jpg";
+            }
 
             $user->updateItemById($userUpdated);
             $_SESSION['user_logged'] = $userUpdated;
@@ -294,25 +195,8 @@ class userController extends Controller
         }
     }
 
-    public function getImage($file,$name,$dir)
-    {
-        if (!imageTypeOk($file, $dir)) {
-            Echo "<br> fitxer no valid </br>";
-            $_SESSION['error'] = "Tipus de fitxer no vàlid";
-            return false;
-        }
-        $extension = explode("/", $file['type']); //recuperem extensio del fitxer
-        $filename = $name . "." . $extension[1]; //creem el nom del fitxer
-        $path = __DIR__ . "/../../Public/Assets/".$dir."/"; //creem la ruta on es guardarà
-        if (move_uploaded_file($file['tmp_name'], $path . $filename)) {
-            echo "<pre>";
-            echo "filename a getImage: " . $filename . "<br>";
-            echo "</pre>";
-            return "$filename";
-        } else {
-            $_SESSION['error'] = "Error al pujar la imatge";
-            return false;
-        }
+    
 
-    }
+
+
 }

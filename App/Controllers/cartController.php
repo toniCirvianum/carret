@@ -25,11 +25,11 @@ class cartController extends Controller
     public function showProducts()
     {
         $this->userLogged();
-        $params['user_image']=$_SESSION['user_logged']['img_profile'];
+        $params['user_image'] = $_SESSION['user_logged']['img_profile'];
         // echo "<pre>";
         // print_r($_SESSION['user_logged']);
         // echo "</pre>";
-        echo $params['user_image'] ."<br>";
+
         if (!$_SESSION['products'] && empty($_SESSION['products'])) {
             //mostra missatge dient que no hi ha productes
             $params['title'] = "Products";
@@ -44,7 +44,13 @@ class cartController extends Controller
             $params['products'] = $_SESSION['products'];
             $params['message'] = $_SESSION['message'];
             unset($_SESSION['message']);
-            $this->render('carret/products', $params, 'site');
+            if ($_SESSION['user_logged']['admin'] == true) {
+                $params['admin'] = true;
+                $this->render('carret/products', $params, 'admin');
+            } else {
+                $params['admin'] = false;
+                $this->render('carret/products', $params, 'site');
+            }
         }
     }
 
@@ -88,8 +94,12 @@ class cartController extends Controller
         $params['cart_items'] = $c->get_cart_items();
         $params['message'] = $_SESSION['message'];
         unset($_SESSION['message']);
-        $params['user_image']=$_SESSION['user_logged']['img_profile'];
-        $this->render('carret/items', $params, 'site');
+        $params['user_image'] = $_SESSION['user_logged']['img_profile'];
+        if ($_SESSION['user_logged']['admin'] == true) {
+            $this->render('carret/items', $params, 'admin');
+        } else {
+            $this->render('carret/items', $params, 'site');
+        }
     }
 
     public function updateCarret()
@@ -118,7 +128,7 @@ class cartController extends Controller
             return;
         }
         $hc = new HistoryCart();
-        $hc -> addElement($_SESSION['cart'],$_SESSION['user_logged']['id']);
+        $hc->addElement($_SESSION['cart'], $_SESSION['user_logged']['id']);
         unset($_SESSION['cart']);
         unset($_SESSION['cart_items']);
         unset($_SESSION['cart_total']);
@@ -133,10 +143,17 @@ class cartController extends Controller
         $this->userLogged();
         $hc = new HistoryCart();
         $params['history'] = $hc->getHistoricalByUserId($_SESSION['user_logged']['id']);
-        $params['user_image']=$_SESSION['user_logged']['img_profile'];
+        if (empty($params['history']) || is_null($params['history'])) {
+            $_SESSION['message'] = "No hi ha historial de compres";
+            $this->showProducts();
+            return;
+        }
+        $params['user_image'] = $_SESSION['user_logged']['img_profile'];
         $params['title'] = "Historial de compres";
-        $this->render('carret/historical', $params, 'site');
+        if ($_SESSION['user_logged']['admin'] == true) {
+            $this->render('carret/historical', $params, 'admin');
+        } else {
+            $this->render('carret/historical', $params, 'site');
+        }
     }
-        
-    
 }

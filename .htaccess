@@ -1,4 +1,6 @@
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
+php_value upload_max_filesize 12M
+php_value post_max_size 12M
 RewriteRule ^ index.php [QSA,L]

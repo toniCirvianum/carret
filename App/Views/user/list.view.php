@@ -1,20 +1,22 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administració d'usuaris</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
+
 <body>
     <div class="container my-5">
-        <h2 class="mb-4">Administración de Usuarios</h2>
+        <h2 class="mb-4">Administració d'usuaris</h2>
         <table class="table table-bordered table-striped">
             <thead>
                 <tr>
-                    <th>Imagen de Perfil</th>
-                    <th>Nombre</th>
-                    <th>Username</th>
+                    <th>Imatge de perfil</th>
+                    <th>Nom</th>
+                    <th>Usuari</th>
                     <th>Password</th>
                     <th>Mail</th>
                     <th>Admin</th>
@@ -22,27 +24,33 @@
                 </tr>
             </thead>
             <tbody>
-                <!-- Ejemplo de usuario en la tabla -->
-                <tr>
-                    <td><img src="ruta/de/imagen_perfil.jpg" alt="Imagen de Perfil" class="img-thumbnail" width="50"></td>
-                    <td>Juan Pérez</td>
-                    <td>juanperez</td>
-                    <td>********</td>
-                    <td>juan.perez@example.com</td>
-                    <td>
-                        <span class="badge bg-success">Admin</span> <!-- O bg-secondary para usuario normal -->
-                    </td>
-                    <td>
-                        <!-- Botón para alternar entre Admin y Usuario -->
-                        <button class="btn btn-sm btn-warning" onclick="toggleAdmin('juanperez')">
-                            Convertir en Usuario
-                        </button>
-                        <!-- Botón para editar el usuario -->
-                        <button class="btn btn-sm btn-primary" onclick="editUser('juanperez')">
-                            Editar
-                        </button>
-                    </td>
-                </tr>
+                <?php foreach ($params['users'] as $user): ?>
+
+                    <tr>
+                        <td><img src="../../../Public/Assets/user/<?= $user['img_profile'] ?>" alt="Imagen de Perfil" class="img-thumbnail" width="50"></td>
+                        <td><?= $user['name'] ?></td>
+                        <td><?= $user['username'] ?></td>
+                        <td><?= $user['password'] ?></td>
+                        <td><?= $user['mail'] ?></td>
+                        <td>
+                            <span class="badge bg-success"><?= $user['admin'] ? 'Admin' : '' ?></span> <!-- O bg-secondary para usuario normal -->
+                        </td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <form action="/admin/changeRol" method="post">
+                                    <input type="hidden" name="id" value="<?= $user['id'] ?>">
+                                    <button type="submit" class="btn btn-sm btn-warning">
+                                        <?php echo $user['admin'] ? "Convertir en User" : "Convertir en Admin" ?> 
+                                    </button>
+                                </form>
+                                <form action="/admin/editUser" method="post">
+                                    <input type="hidden" name="id" value="<?= $user['id'] ?>">
+                                    <button type="submit" class="btn btn-sm btn-primary">Editar</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
                 <!-- Más usuarios -->
             </tbody>
         </table>
@@ -62,4 +70,5 @@
         }
     </script>
 </body>
+
 </html>

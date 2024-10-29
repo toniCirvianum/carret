@@ -5,10 +5,10 @@ if (!isset(URL)) define('URL',$_SERVER['REQUEST_URI']);
 //     [
 //         'id' => 1,
 //         'name' => 'Producto 1',
-//         'image' => 'imagen1.jpg',
+//         'image' => 'sneaker01.jpg',
 //         'description' => 'Descripción del producto 1',
 //         'price' => 10.00,
-//         'image'=> 'img01.jpg'
+//         'image' => 'sneaker01.jpg',
 //     ],
 //     [
 //         'id' => 2,
@@ -84,7 +84,8 @@ $users = [
         'mail' => 'mail@mail.es',
         'token' => 'EREDTRTGTFF',
         'verified' => true,
-        'admin' => true
+        'admin' => true,
+        'img_profile' => 'A.jpg'
     ],
     [
         'id' => 0,
@@ -93,7 +94,8 @@ $users = [
         'mail' => 'mail@mail.es',
         'token' => 'EREDTRTGTFF',
         'verified' => true,
-        'admin' => false
+        'admin' => false,
+        'img_profile' => 'R.jpg'
     ]
 ];
 
