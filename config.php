@@ -11,7 +11,7 @@ if (!isset($_SESSION['users'])) {
             'admin'=>true,
             'token'=>"",
             'verificat'=> true,
-            'img_profile'=>"A.jpg"
+            'img_profile'=>"admin.jpg"
         ],
         [
             'id'=>1,
@@ -22,7 +22,7 @@ if (!isset($_SESSION['users'])) {
             'admin'=>false,
             'token'=>"",
             'verificat'=> true,
-            'img_profile'=>"C.jpg"
+            'img_profile'=>"raquel.jpg"
     
         ]
     ];

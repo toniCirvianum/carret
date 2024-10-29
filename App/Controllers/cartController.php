@@ -26,9 +26,6 @@ class cartController extends Controller
     {
         $this->userLogged();
         $params['user_image'] = $_SESSION['user_logged']['img_profile'];
-        // echo "<pre>";
-        // print_r($_SESSION['user_logged']);
-        // echo "</pre>";
 
         if (!$_SESSION['products'] && empty($_SESSION['products'])) {
             //mostra missatge dient que no hi ha productes

@@ -43,7 +43,12 @@ class producteController extends Controller {
                 'price' => $_POST['price'],
                 'image' => getImage($_FILES['img_product'], "sneaker".$_SESSION['id_product'], 'img')
             ];
- 
+            
+            if ($newProduct['image']== false) {
+                $_SESSION['error'] = "Error al pujar la imatge";
+                $this->index();
+                return;
+            }
             $p->create($newProduct);
             $_SESSION['message'] = "Producte afegit";
             //if image = null error
@@ -52,20 +57,6 @@ class producteController extends Controller {
             return;
 
         }
-
-
-
-        // $p = new Producte();
-        // $producte = $p->addItem($_POST);
-        // if($producte){
-        //     $_SESSION['message'] = "Producte afegit";
-        // }else{
-        //     $_SESSION['error'] = "Producte no afegit";
-        // }
-        // header ("Location: /cart/showProducts");
-        // exit();
-
-
     }
 
     public function deleteProducte($id=null) {
@@ -73,6 +64,11 @@ class producteController extends Controller {
         adminLogged();
         $p = new Producte();
         $producte = $p->removeItemById($id[0]);
+       
+        $c= new Cart();
+        $c->remove_product($id[0]);
+        if(isset($_SESSION['cart_items'])) $_SESSION['cart_items']=--$_SESSION['cart_items'];
+
         if($producte){
             $_SESSION['message'] = "Producte eliminat";
         }else{
@@ -84,14 +80,47 @@ class producteController extends Controller {
 
     }
 
-    public function UpdateProducte($id=null) {
+    public function editarProducte($id=null) {
         userLogged();
         adminLogged();
         $p = new Producte();
-        $producte = $p->getItemById($id[0]);
+        $producte = $p->getById($id[0]);
         $params['producte'] = $producte;
         $params['title'] = "Editar producte";
         $params['user_image'] = $_SESSION['user_logged']['img_profile'];
-        $this->render("producte/edit", $params, "admin");
+        if (isset($_SESSION['error'])) { //si no hi ha error no fa falta passar res
+            $params['error'] = $_SESSION['error'];
+            unset($_SESSION['error']);
+        }
+        if (isset($_SESSION['message'])) { //si no hi ha message no fa falta passar res
+            $params['message'] = $_SESSION['message'];
+            unset($_SESSION['message']);
+        }
+        $this->render("producte/editarProducte", $params, "admin");
+        return;
+    }
+
+    public function desarProducte() {
+        userLogged();
+        adminLogged();
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            if (empty($_POST['name']) || empty($_POST['description']) || empty($_POST['price'])) {
+                $_SESSION['error'] = "Falten camps per omplir";
+                $this->editarProducte();
+                return;
+            }
+            $p = new Producte();
+            $producte = $p->getById($_POST['id']);
+            $producte['name'] = empty($_POST['name']) ? $producte['name'] : $_POST['name'];
+            $producte['description'] = empty($_POST['description']) ? $producte['description'] : $_POST['description'];
+            $producte['price'] = empty($_POST['price']) ? $producte['price'] : $_POST['price'];
+            $producte['image'] = $_FILES['img_product']['size']==0 ? $producte['image'] : getImage($_FILES['img_product'], "sneaker".$_POST['id'], 'img');
+
+            $p->updateItemById($producte);
+            $_SESSION['message'] = "Producte actualitzat";
+            $this->editarProducte($_POST['id']);
+            return;
+        }
     }
 }
