@@ -46,6 +46,7 @@ class producteController extends Controller {
  
             $p->create($newProduct);
             $_SESSION['message'] = "Producte afegit";
+            //if image = null error
 
             $this->index();
             return;
