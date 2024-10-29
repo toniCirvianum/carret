@@ -145,17 +145,17 @@ function validateUserInput($userInfo)
             }
         }
     }
-    if (!isset($_SESSION['user_logged'])) {
-        //si estem creant usuari comprova que el usuari i mail no existeixi
-        if ($u->getUserByUsername($userInfo['username']) != null) {
-            $_SESSION['error'] = "El nom d'usuari ja existeix 2";
-            return false;
-        }
-        if (!validateMail($userInfo['mail'])) {
-            $_SESSION['error'] = "El mail no és correcte";
-            return false;
-        }
-    }
+    // if (!isset($_SESSION['user_logged'])) {
+    //     //si estem creant usuari comprova que el usuari i mail no existeixi
+    //     if ($u->getUserByUsername($userInfo['username']) != null) {
+    //         $_SESSION['error'] = "El nom d'usuari ja existeix 2";
+    //         return false;
+    //     }
+    //     if (!validateMail($userInfo['mail'])) {
+    //         $_SESSION['error'] = "El mail no és correcte";
+    //         return false;
+    //     }
+    // }
     if (isset($_SESSION['user_logged']) && $_SESSION['user_logged']['admin'] == true) {
         //si estem eidtant usuari com a admin
         //comprova si s'ha modificat el nom d'usuari i que el nou nom d'usuari no existeixi

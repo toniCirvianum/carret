@@ -59,7 +59,9 @@ class producteController extends Controller {
         }
     }
 
-    public function deleteProducte($id=null) {
+    public function deleteProducte($id=null) 
+    //metode per eliminar productes. Si estan al carret també els elimina del carret
+    {
         userLogged();
         adminLogged();
         $p = new Producte();
@@ -80,7 +82,9 @@ class producteController extends Controller {
 
     }
 
-    public function editarProducte($id=null) {
+    public function editarProducte($id=null)
+    //crea la vista per editar producte
+    {
         userLogged();
         adminLogged();
         $p = new Producte();

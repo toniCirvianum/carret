@@ -66,6 +66,8 @@ class userController extends Controller
         }
     }
 
+
+
     public function create()
     //genera la vista per crear usuari
     {
@@ -114,6 +116,7 @@ class userController extends Controller
             } else {
                 //Si esta verificat afegim a la variable de sessio user_logged
                 $_SESSION['user_logged'] = $newUser;
+                //Afegim la variable de sessio user_image per mostrar la imatge de perfil
                 $_SESSION['user_image'] = $newUser['img_profile'];
                 //carreguem la vista de l'usuari
                 $this->view();
