@@ -42,8 +42,8 @@
                                 <div class="content-center">
                                 <input type="submit" value="Afegir" class="btn btn-success">
                                 <?php if ($params['admin']) :?>
-                                    <a href="" class="btn btn-warning"> Editar </a>
-                                    <a href="/producte/deleteProducte/<?=$product['id'] ?>" class="btn btn-danger"> Eliminar </a>
+                                    <a href="/producte/editarProducte/<?=$product['id'] ?>" class="btn btn-outline-warning"> Editar </a>
+                                    <a href="/producte/deleteProducte/<?=$product['id'] ?>" class="btn btn-outline-danger"> Eliminar </a>
                                 <?php endif; ?>
                                 </div>
                                 <div class="mb-3">

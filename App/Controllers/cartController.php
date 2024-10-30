@@ -4,7 +4,8 @@ class cartController extends Controller
 {
 
     public function index()
-    //mostra la vista de productes si estas loguejat
+    //carrega la vista de productes si estas logejat
+    //sino el redirigeix a la pagina principal
     {
         if ($this->userLogged()) {
             $this->showProducts();
@@ -13,7 +14,8 @@ class cartController extends Controller
     }
 
     private function userLogged()
-    //comprova si estas loguejat si no envia al principi
+    //comnprova si l'usuari esta logejat sino et retorna a la pagina 
+    //principal
     {
         if (isset($_SESSION['user_logged'])) {
             return true;
@@ -23,17 +25,18 @@ class cartController extends Controller
         }
     }
     public function showProducts()
-    //mostra els productes
+    //mostra la vista de productes
     {
         $this->userLogged();
-        $params['user_image'] = $_SESSION['user_logged']['img_profile']; //carrega la imatge de l'usuari
+        //carreega la imatge de perfil de l'usuari
+        $params['user_image'] = $_SESSION['user_logged']['img_profile'];
 
         if (!$_SESSION['products'] && empty($_SESSION['products'])) {
             //mostra missatge dient que no hi ha productes
             $params['title'] = "Products";
             $this->render('carret/empty', $params, 'site');
         } else {
-            //carrega els parametres necessaris per la vista
+            //si tot es correcte carrega els parametres de la vista
             $params['error'] = $_SESSION['error'];
             unset($_SESSION['error']);
             $params['prod_id'] = $_SESSION['prod_id'];
@@ -54,8 +57,7 @@ class cartController extends Controller
     }
 
     function addItemsToCart()
-    //Afegeix els productes al carret
-    //ho desa a la variable de session $_SESSION['cart_items]
+    //afegeix productes seleccionats al carret
     {
         $this->userLogged();
 
