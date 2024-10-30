@@ -1,7 +1,5 @@
 <?php
 
-use Google\Service\AdExchangeBuyerII\Product;
-
 class producteController extends Controller
 {
 
@@ -46,8 +44,8 @@ class producteController extends Controller
                 'price' => $_POST['price'],
                 'image' => getImage($_FILES['img_product'], "sneaker" . $_SESSION['id_product'], 'img')
             ];
-            
-            if ($newProduct['image']== false) {
+
+            if ($newProduct['image'] == false) {
                 $_SESSION['error'] = "Error al pujar la imatge";
                 $this->index();
                 return;
@@ -60,7 +58,7 @@ class producteController extends Controller
         }
     }
 
-    public function deleteProducte($id=null) 
+    public function deleteProducte($id = null)
     //metode per eliminar productes. Si estan al carret també els elimina del carret
     {
         userLogged();
@@ -76,7 +74,7 @@ class producteController extends Controller
         exit();
     }
 
-    public function editarProducte($id=null)
+    public function editarProducte($id = null)
     //crea la vista per editar producte
     {
         userLogged();
@@ -98,10 +96,11 @@ class producteController extends Controller
         return;
     }
 
-    public function desarProducte() {
+    public function desarProducte()
+    //metode per desar els canvis d'un producte després d'editar-lo
+    {
         userLogged();
         adminLogged();
-
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (empty($_POST['name']) || empty($_POST['description']) || empty($_POST['price'])) {
                 $_SESSION['error'] = "Falten camps per omplir";
@@ -113,7 +112,7 @@ class producteController extends Controller
             $producte['name'] = empty($_POST['name']) ? $producte['name'] : $_POST['name'];
             $producte['description'] = empty($_POST['description']) ? $producte['description'] : $_POST['description'];
             $producte['price'] = empty($_POST['price']) ? $producte['price'] : $_POST['price'];
-            $producte['image'] = $_FILES['img_product']['size']==0 ? $producte['image'] : getImage($_FILES['img_product'], "sneaker".$_POST['id'], 'img');
+            $producte['image'] = $_FILES['img_product']['size'] == 0 ? $producte['image'] : getImage($_FILES['img_product'], "sneaker" . $_POST['id'], 'img');
 
             $p->updateItemById($producte);
             $_SESSION['message'] = "Producte actualitzat";

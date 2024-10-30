@@ -54,8 +54,9 @@ class adminController extends Controller {
     }
 
     
-    public function editUser() {
-        //mostra la vista per editar l'usuari
+    public function editUser() 
+    //mostra la vista per editar l'usuari
+    {
         userLogged();
         adminLogged();
         $params['title'] = "Editar Usuari";
@@ -76,7 +77,7 @@ class adminController extends Controller {
 
     public function updateUser()
      //metode per actualitzar info d'usuari
-     {
+    {
         //si no es post no fa res
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 

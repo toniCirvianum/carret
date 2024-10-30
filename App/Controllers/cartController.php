@@ -24,6 +24,7 @@ class cartController extends Controller
             exit();
         }
     }
+    
     public function showProducts()
     //mostra la vista de productes
     {

@@ -4,6 +4,7 @@ class userController extends Controller
 {
 
     public function index()
+    //carrega la vista amb els productes si estas logejat
     {
         if (isset($_SESSION['user_logged'])) {
             header("Location: /cart/showProducts");
@@ -66,8 +67,6 @@ class userController extends Controller
         }
     }
 
-
-
     public function create()
     //genera la vista per crear usuari
     {
@@ -98,16 +97,14 @@ class userController extends Controller
             $pass = $_POST['pass'];
 
             $userModel = new User();
-            $result = $userModel->loginOk($username, $pass);
+            $newUser = $userModel->loginOk($username, $pass);
             //Si les credencials no son correctes mostra error
-            if (is_null($result)) {
+            if (is_null($newUser)) {
                 $_SESSION['error'] = "Credencials incorrectes";
                 $this->index();
                 return;
             }
             // Si arribem aqui les credencials son correctes
-            //Per tant recuperem usuari del model
-            $newUser = $userModel->getUserByUsername($username);
             //Comprovem si esta verificat
             if ($newUser['verificat'] == false) {
                 $_SESSION['error'] = "Usuari no verificat";
@@ -118,7 +115,7 @@ class userController extends Controller
                 $_SESSION['user_logged'] = $newUser;
                 //Afegim la variable de sessio user_image per mostrar la imatge de perfil
                 $_SESSION['user_image'] = $newUser['img_profile'];
-                //carreguem la vista de l'usuari
+                //carreguem la vista de l'usuari amb els productes
                 $this->view();
                 return;
             }
@@ -127,7 +124,7 @@ class userController extends Controller
 
     public function view()
     {
-        //carrega el user View
+        //carrega el user View o vista amb els productes
         userLogged();
         $this->index();
         return;
@@ -135,7 +132,7 @@ class userController extends Controller
 
     public function logout()
     {
-        //esborrem la variable de sessio user_logged i la posem a false
+        //esborrem la variable de sessio user_logged
         unset($_SESSION['user_logged']);
 
         unset($_SESSION['cart']);
@@ -146,7 +143,7 @@ class userController extends Controller
     }
 
     public function edit()
-    //genera la vista per editar usuari
+    //genera la vista per editar l'usuari loggejat
     {
         userLogged();
         $params['title'] = "Edit User";
@@ -161,7 +158,7 @@ class userController extends Controller
     }
 
     public function updateUser()
-    //metode per actualitzar info d'usuari
+    //metode per actualitzar info d'usuari loggejat
     {
         //si no es post no fa res
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {

@@ -44,7 +44,7 @@ class Cart extends Orm {
         return $_SESSION['cart'][$id]['qty'];
     }
 
-    public function remove_product($id) {
+    private function remove_product($id) {
         unset($_SESSION['cart'][$id]);
     }
 
@@ -65,7 +65,6 @@ class Cart extends Orm {
 
     public function validateCart() {
         $date = date('Y-m-d H:i:s');
-        echo $date;
         
     }
 }
