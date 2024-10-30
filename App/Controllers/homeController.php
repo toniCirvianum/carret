@@ -1,7 +1,6 @@
 <?php
-
+//Carrega les vistes de la pàgin principal
 class homeController extends Controller {
-
     public function index() {
         $params['title'] = "Home - My Sneakers";
         $this -> render ('home/home',$params,'main');

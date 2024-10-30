@@ -2,10 +2,12 @@
 
 use Google\Service\AdExchangeBuyerII\Product;
 
-class producteController extends Controller {
+class producteController extends Controller
+{
 
-    public function index () {
-
+    public function index()
+    //Carrega la vista per afegir productes
+    {
         userLogged();
         adminLogged();
         $params['title'] = "Afegir producte";
@@ -22,13 +24,14 @@ class producteController extends Controller {
     }
 
 
-    public function addProducte() {
-
+    public function addProducte()
+    //afegeix productes a la llsita de productes 
+    //els producrtes es guarden a la variable de sessio $_SESSION['products']
+    {
         userLogged();
         adminLogged();
-
-         //si no es post no fa res
-         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        //si no es post no fa res
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             if (empty($_POST['name']) || empty($_POST['description']) || empty($_POST['price']) || empty($_FILES['img_product'])) {
                 $_SESSION['error'] = "Falten camps per omplir";
@@ -41,50 +44,35 @@ class producteController extends Controller {
                 'name' => $_POST['name'],
                 'description' => $_POST['description'],
                 'price' => $_POST['price'],
-                'image' => getImage($_FILES['img_product'], "sneaker".$_SESSION['id_product'], 'img')
+                'image' => getImage($_FILES['img_product'], "sneaker" . $_SESSION['id_product'], 'img')
             ];
- 
+
             $p->create($newProduct);
             $_SESSION['message'] = "Producte afegit";
-            //if image = null error
 
             $this->index();
             return;
-
         }
-
-
-
-        // $p = new Producte();
-        // $producte = $p->addItem($_POST);
-        // if($producte){
-        //     $_SESSION['message'] = "Producte afegit";
-        // }else{
-        //     $_SESSION['error'] = "Producte no afegit";
-        // }
-        // header ("Location: /cart/showProducts");
-        // exit();
-
-
     }
 
-    public function deleteProducte($id=null) {
+    public function deleteProducte($id = null)
+    //elimina productes de la llista de productes
+    {
         userLogged();
         adminLogged();
         $p = new Producte();
         $producte = $p->removeItemById($id[0]);
-        if($producte){
+        if ($producte) {
             $_SESSION['message'] = "Producte eliminat";
-        }else{
+        } else {
             $_SESSION['error'] = "Producte no eliminat";
         }
-        header ("Location: /cart/showProducts");
+        header("Location: /cart/showProducts");
         exit();
-        
-
     }
 
-    public function UpdateProducte($id=null) {
+    public function UpdateProducte($id = null)
+    {
         userLogged();
         adminLogged();
         $p = new Producte();

@@ -5,8 +5,10 @@ use Google\Service\MyBusinessAccountManagement\Admin;
 class adminController extends Controller {
 
     public function index()
+    //carrega la vista de productes si ets admin
+    //en cas contrari envia al login i mostra els errors corresponents
     {
-        if (isset($_SESSION['user_logged'])) {
+        if (isset($_SESSION['user_logged']) && $_SESSION['user_logged']['admin'] == 1) {
             header("Location: /cart/showProducts");
             exit();
         } else {

@@ -4,16 +4,16 @@ class cartController extends Controller
 {
 
     public function index()
+    //mostra la vista de productes si estas loguejat
     {
         if ($this->userLogged()) {
             $this->showProducts();
             return;
-        } else {
-            header('Location: /');
-            exit();
         }
     }
+
     private function userLogged()
+    //comprova si estas loguejat si no envia al principi
     {
         if (isset($_SESSION['user_logged'])) {
             return true;
@@ -23,18 +23,17 @@ class cartController extends Controller
         }
     }
     public function showProducts()
+    //mostra els productes
     {
         $this->userLogged();
-        $params['user_image'] = $_SESSION['user_logged']['img_profile'];
-        // echo "<pre>";
-        // print_r($_SESSION['user_logged']);
-        // echo "</pre>";
+        $params['user_image'] = $_SESSION['user_logged']['img_profile']; //carrega la imatge de l'usuari
 
         if (!$_SESSION['products'] && empty($_SESSION['products'])) {
             //mostra missatge dient que no hi ha productes
             $params['title'] = "Products";
             $this->render('carret/empty', $params, 'site');
         } else {
+            //carrega els parametres necessaris per la vista
             $params['error'] = $_SESSION['error'];
             unset($_SESSION['error']);
             $params['prod_id'] = $_SESSION['prod_id'];
@@ -55,6 +54,8 @@ class cartController extends Controller
     }
 
     function addItemsToCart()
+    //Afegeix els productes al carret
+    //ho desa a la variable de session $_SESSION['cart_items]
     {
         $this->userLogged();
 
@@ -84,6 +85,7 @@ class cartController extends Controller
     }
 
     public function showCarret()
+    //mostra el contingut del carret
     {
         $this->userLogged();
 
@@ -103,6 +105,7 @@ class cartController extends Controller
     }
 
     public function updateCarret()
+    //Actualitza el carret si augmentem o disminuim la quantitat
     {
         $this->userLogged();
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -120,6 +123,8 @@ class cartController extends Controller
     }
 
     public function validateCarret()
+    //Valida el carret i el guarda a la taula history_cart
+    //L'històric es desa a la variable de sessió $_SESSION['history_cart']
     {
         $this->userLogged();
         if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
@@ -139,6 +144,7 @@ class cartController extends Controller
     }
 
     public function history()
+    //carrega la vista per mostrar l'historial de compres
     {
         $this->userLogged();
         $hc = new HistoryCart();
