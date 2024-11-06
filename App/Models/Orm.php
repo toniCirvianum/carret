@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
-class Orm{
+use Database;
+
+class Orm extends Database{
 
     protected $model;
 
