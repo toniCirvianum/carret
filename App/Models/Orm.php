@@ -2,14 +2,14 @@
 
 namespace App\Models;
 
-use Database;
+use \App\Helpers\Database;
 
 class Orm extends Database{
 
     protected $model;
 
     public function __construct($model){
-
+        parent::__construct();
         $this->model = $model;
         if(!isset($_SESSION[$model])){
             $_SESSION[$model] = [];
