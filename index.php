@@ -6,8 +6,10 @@ if(!isset($_SESSION)){
     $_SESSION['message']="";
     $_SESSION['prod_id']="";
 }
-
-// include_once("vendor/autoload.php");
+define ('ROOT_PATH',$_SERVER['DOCUMENT_ROOT']);
+include_once("vendor/autoload.php");
+$dotenv = Dotenv\Dotenv::createImmutable(ROOT_PATH);
+$dotenv->load();
 include_once("config.php"); //Donarà error si no s'afegeix aquest fitxer a l'arrel del projecte
 include_once("App/Helpers/functions.php");
 include_once("App/Router.php");
