@@ -38,16 +38,16 @@ class Orm extends Database{
     public function create($item){
         //$_SESSION[$this->model][] = $item;
         
-        $params = [];
+        $colums = implode(", ",array_keys($item));
+        $values = ":".implode(", :",array_keys($item));
+        $sql = "INSERT INTO $this->model ($colums) VALUES ($values)";
+        $params=[];
         foreach ($item as $key => $value) {
-            $params[":$key"] = $value;
+            $params[":$key"]=$value;
         }
-        $columns = implode(", ", array_keys($item));
-        $values = ":" . implode(", :", array_keys($item));
-        $sql = "INSERT INTO $this->model ($columns) VALUES ($values)";
-        $result = $this->queryDataBase($sql, $params);
-        return $result; 
+        $result = $this->queryDataBase($sql,$params,true);
         array_push($_SESSION[$this->model],$item);
+        return $result;
 
     }
 
