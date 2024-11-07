@@ -14,6 +14,12 @@ var_dump($db->create($item_prova));
 
 var_dump($db->getById(1));
 
+var_dump($db->removeItemById(2));
+
+echo "<pre>";
+print_r($db->getAll());
+echo "</pre>";
+
 
 
 

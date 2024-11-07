@@ -32,13 +32,18 @@ class Orm extends Database{
     }
 
     public function removeItemById($id){
-        foreach ($_SESSION[$this->model] as $key => $item) {
-            if($item['id']==$id){
-                unset($_SESSION[$this->model][$key]);
-                return $item;
-            }
-        }
-        return null;
+        // foreach ($_SESSION[$this->model] as $key => $item) {
+        //     if($item['id']==$id){
+        //         unset($_SESSION[$this->model][$key]);
+        //         return $item;
+        //     }
+        // }
+        // return null;
+        $sql = "DELETE FROM $this->model WHERE id = :id";
+        $params = [":id" => $id];
+        $result = $this->queryDataBase($sql, $params);
+        return $result;
+
     }
 
     public function create($item){
@@ -58,7 +63,12 @@ class Orm extends Database{
     }
 
     public function getAll(){
+        $sql = "SELECT * FROM $this->model";
+        $result = $this->queryDataBase($sql);
+        $_SESSION[$this->model] = $result->fetchAll();
         return $_SESSION[$this->model];
+
+
     }
 
     public function updateItemById($itemUpdated){
