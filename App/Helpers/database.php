@@ -53,6 +53,9 @@ class Database
     function queryDataBase($sql, $params = null, $id = false)
     //executa la sentencia sql que li passem per parametre
     {
+        if ($this->connection==null) {
+            $this->setConnection();
+        }
         try {
             $connection = $this->getConnection();
             $statement = $this->getConnection()->prepare($sql);

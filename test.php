@@ -12,6 +12,11 @@ $item_prova=[
 ];
 var_dump($db->create($item_prova));
 
+var_dump($db->getById(1));
+
+
+
+
 
 //
 

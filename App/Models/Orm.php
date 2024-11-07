@@ -18,11 +18,17 @@ class Orm extends Database{
     }
 
     public function getById($id){
-        foreach ($_SESSION[$this->model] as $item) {
-            if($item['id'] == $id){
-                return $item;
-            }
-        }
+        // foreach ($_SESSION[$this->model] as $item) {
+        //     if($item['id'] == $id){
+        //         return $item;
+        //     }
+        // }
+        $sql = "SELECT * FROM $this->model WHERE id = :id";
+        $params = [":id" => $id];
+        $result = $this->queryDataBase($sql, $params);
+        $result = $result != null ? $result->fetch() : null;
+        return $result;
+
     }
 
     public function removeItemById($id){
