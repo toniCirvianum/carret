@@ -72,13 +72,30 @@ class Orm extends Database{
     }
 
     public function updateItemById($itemUpdated){
-        foreach ($_SESSION[$this->model] as $key => $item) {
-            if($item['id']==$itemUpdated['id']){
-                $_SESSION[$this->model][$key]=$itemUpdated;
-                return $itemUpdated;
+        // foreach ($_SESSION[$this->model] as $key => $item) {
+        //     if($item['id']==$itemUpdated['id']){
+        //         $_SESSION[$this->model][$key]=$itemUpdated;
+        //         return $itemUpdated;
+        //     }
+        // }
+        // return null;
+        // UPDATE $this->mdoel SET (item=:item,description=:desciption) WHERE id=:id
+        $set="";
+        foreach ($itemUpdated as $key => $value) {
+            if ($key != 'id') {
+                $set = $set . "$key=:$key, ";
             }
         }
-        return null;
+        $set = substr($set,0,-2);
+        $params=[];
+        foreach ($itemUpdated as $key => $value) {
+            $params[":$key"]=$value;
+        }
+        $sql ="UPDATE $this->model SET $set WHERE id=:id";
+        $result = $this->queryDataBase($sql,$params);
+        return $result;
+
+        
     }
 
     public function reset(){
