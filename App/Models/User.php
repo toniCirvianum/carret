@@ -34,10 +34,20 @@ class User extends Orm
     }
 
     public function loginOk($u, $p)
+    //comprovar les credencials $u, $p
     {   
+        $newuser = new User();
+        $userToLogin = $newuser->getUserByUsername($u) ;
+        if ($userToLogin==null) return null;
+        $salt = $userToLogin['salt'];
+        $pepper = $_ENV['PEPPER'];
+        $passwordToCheck = $pepper . $p . $salt;
+        //Es pot fer un getAll per recuperar usuaris
+        $_SESSION[$this->model]=$newuser->getAll();
         foreach ($_SESSION[$this->model] as $user) {
             if ($user['username'] == $u) {
-                if ($user['password'] == $p) {
+                if (password_verify($passwordToCheck,$user['password']))
+                     {
                     return $user;
                 }
             }
@@ -62,7 +72,7 @@ class User extends Orm
             ':username' =>$username
         ];
         $result = $this->queryDataBase($sql,$params);
-        if ($result != null) $result;
+        if ($result != null) $result=$result->fetch();
         return $result;
 
     }
