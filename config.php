@@ -1,32 +1,55 @@
 <?php
+$pepper = $_ENV['PEPPER'];
+$salt = bin2hex(random_bytes(16));
+$passClear = '123';
+$passWithPepperAndSalt = $pepper . $passClear . $salt;
+$passHashed = password_hash($passWithPepperAndSalt, PASSWORD_BCRYPT);
+$user = [
+    'id'=>0,
+    'name' => 'Toni F',
+    'username'=>'admin',
+    'password'=>$passHashed,
+    'mail' => "mail@mail.com",
+    'admin'=>true,
+    'token'=>"",
+    'verificat'=> true,
+    'salt'=>$salt,
+    'img_profile'=>"admin.jpg"
+];
 
-if (!isset($_SESSION['users'])) {
-    $_SESSION['users'] = [
-        [
-            'id'=>0,
-            'name' => 'Toni F',
-            'username'=>'admin',
-            'password'=>'123',
-            'mail' => "mail@mail.com",
-            'admin'=>true,
-            'token'=>"",
-            'verificat'=> true,
-            'img_profile'=>"admin.jpg"
-        ],
-        [
-            'id'=>1,
-            'name' => 'Raquel F',
-            'username'=>'raquel',
-            'password'=>'123',
-            'mail' => "mail@mail.com",
-            'admin'=>false,
-            'token'=>"",
-            'verificat'=> true,
-            'img_profile'=>"raquel.jpg"
+$db = new User();
+
+if ($db->getUserByUsername('admin')==null) $db->create($user);
+
+
+
+// if (!isset($_SESSION['users'])) {
+//     $_SESSION['users'] = [
+//         [
+//             'id'=>0,
+//             'name' => 'Toni F',
+//             'username'=>'admin',
+//             'password'=>'123',
+//             'mail' => "mail@mail.com",
+//             'admin'=>true,
+//             'token'=>"",
+//             'verificat'=> true,
+//             'img_profile'=>"admin.jpg"
+//         ],
+//         [
+//             'id'=>1,
+//             'name' => 'Raquel F',
+//             'username'=>'raquel',
+//             'password'=>'123',
+//             'mail' => "mail@mail.com",
+//             'admin'=>false,
+//             'token'=>"",
+//             'verificat'=> true,
+//             'img_profile'=>"raquel.jpg"
     
-        ]
-    ];
-}
+//         ]
+//     ];
+// }
 
 if (!isset($_SESSION['products'])) {
     $_SESSION['products'] = [

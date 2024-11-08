@@ -14,7 +14,7 @@ include_once("vendor/autoload.php");
 $dotenv = Dotenv\Dotenv::createImmutable(ROOT_PATH);
 $dotenv->load();
 
-include_once("config.php"); //Donarà error si no s'afegeix aquest fitxer a l'arrel del projecte
+
 include_once("App/Helpers/database.php");
 include_once("App/Helpers/functions.php");
 include_once("App/Router.php");
@@ -25,13 +25,14 @@ include_once("App/Models/Cart.php");
 include_once("App/Models/Producte.php");
 include_once("App/Models/HistoryCart.php");
 include_once("App/Core/Controller.php");
+include_once("config.php");
 
 
-// use App\Router;
+use App\Router;
 
 
 
 
 
-// $myRouter = new Router();
-// $myRouter->run();
+$myRouter = new Router();
+$myRouter->run();

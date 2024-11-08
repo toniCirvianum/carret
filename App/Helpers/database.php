@@ -37,7 +37,6 @@ class Database
         ];
         $this->connection= new PDO("mysql:host=$this->db_host;dbname=$this->db_name", $this->db_user, $this->db_password, $options);
         $this->connection->exec('SET CHARACTER SET UTF8');
-        echo "connexio a la base de dades";
     }
 
     public function closeConnection()

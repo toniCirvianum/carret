@@ -49,15 +49,22 @@ class userController extends Controller
             $image_profile = getImage($_FILES['img_profile'], $username, 'user');
             $user = new User(); //instanciem la classe User
             //Creem un nou usuari
+            $pepper = $_ENV['PEPPER'];
+            $salt = bin2hex(random_bytes(16));
+            $passClear = $pass;
+            $passWithPepperAndSalt = $pepper . $passClear . $salt;
+            $passHashed = password_hash($passWithPepperAndSalt, PASSWORD_BCRYPT);
+
             $newuser = [
                 "id" => ++$_SESSION['id_user'],
                 "name" => $name,
                 "username" => $username,
-                "password" => $pass,
+                "password" => $passHashed,
                 "mail" => $mail,
-                "admin" => false,
+                "admin" => 0,
                 "token" => $user->generaToken(), //Falta la funcio per generar token
                 "verificat" => true,
+                "salt"=> $salt,
                 "img_profile" => $image_profile
             ];
             //Afegim l'usuari al model

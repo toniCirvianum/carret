@@ -11,8 +11,27 @@ class User extends Orm
         if (!isset($_SESSION['id_user'])) {
             $_SESSION['id_user'] = 1;
         }
+        $this->createTable();
     }
 
+    public function createTable()
+    {
+        $sql = 'CREATE TABLE IF NOT EXISTS users(
+            id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(250) NOT NULL,
+            username VARCHAR(250) NOT NULL,
+            password VARCHAR(250) NOT NULL,
+            mail VARCHAR(250) NOT NULL,
+            admin BOOLEAN NOT NULL DEFAULT 0,
+            token VARCHAR(250) NOT NULL,
+            verificat BOOLEAN NOT NULL DEFAULT 0,
+            salt VARCHAR(250) NOT NULL,
+            img_profile VARCHAR(250) NOT NULL,
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            modified_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+            ) ENGINE = InnoDB;';
+        $this->queryDataBase($sql);
+    }
 
     public function loginOk($u, $p)
     {   
@@ -32,12 +51,20 @@ class User extends Orm
     }
 
     public function getUserByUsername($username){
-        foreach ($_SESSION[$this->model] as $user) {
-            if($user['username'] == $username){
-                return $user;
-            }
+        // foreach ($_SESSION[$this->model] as $user) {
+        //     if($user['username'] == $username){
+        //         return $user;
+        //     }
             
-        } return null;
+        // } return null;
+        $sql = "SELECT * FROM $this->model WHERE username=:username";
+        $params = [
+            ':username' =>$username
+        ];
+        $result = $this->queryDataBase($sql,$params);
+        if ($result != null) $result;
+        return $result;
+
     }
 
     public function getUserByMail($mail){

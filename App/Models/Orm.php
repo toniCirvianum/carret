@@ -56,8 +56,10 @@ class Orm extends Database{
         foreach ($item as $key => $value) {
             $params[":$key"]=$value;
         }
-        $result = $this->queryDataBase($sql,$params,true);
-        array_push($_SESSION[$this->model],$item);
+        $id = $this->queryDataBase($sql,$params,true);
+        $result = $this->getById($id);
+
+        $result != null ?? array_push($_SESSION[$this->model],$item);
         return $result;
 
     }
