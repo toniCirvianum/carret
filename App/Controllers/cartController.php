@@ -93,7 +93,7 @@ class cartController extends Controller
         $this->userLogged();
 
         $c = new Cart();
-        $params['cart'] = $c->getAll();
+        $params['cart'] = $c->get_cart();
         $params['cart_total'] = $c->get_cart_total();
         $params['title'] = "Carret";
         $params['cart_items'] = $c->get_cart_items();

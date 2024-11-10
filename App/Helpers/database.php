@@ -75,6 +75,7 @@ class Database
         } catch (PDOException $err) {
 
             echo "error: " . $err->getMessage();
+            return null;
         }
     }
 }

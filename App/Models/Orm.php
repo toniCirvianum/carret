@@ -58,8 +58,9 @@ class Orm extends Database{
         }
         $id = $this->queryDataBase($sql,$params,true);
         $result = $this->getById($id);
+        if ($result != null) 
+            array_push($_SESSION[$this->model],$item);
 
-        $result != null ?? array_push($_SESSION[$this->model],$item);
         return $result;
 
     }
@@ -67,7 +68,9 @@ class Orm extends Database{
     public function getAll(){
         $sql = "SELECT * FROM $this->model";
         $result = $this->queryDataBase($sql);
-        $_SESSION[$this->model] = $result->fetchAll();
+        if ($result != null) $result = $result->fetchAll();
+        $_SESSION[$this->model] = $result;
+        
         return $_SESSION[$this->model];
 
 
@@ -101,6 +104,8 @@ class Orm extends Database{
     }
 
     public function reset(){
+        $sql = "DELETE FROM $this->model";
+        $result = $this->queryDataBase($sql);
         unset($_SESSION[$this->model]);
     }
 

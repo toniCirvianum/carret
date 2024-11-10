@@ -51,6 +51,22 @@ if ($db->getUserByUsername('admin')==null) $db->create($user);
 //     ];
 // }
 
+// $product= new Producte();
+// $products=$product->getAll();
+// if ($products==null) { 
+//     $prod = 
+//         [
+//             'id' => 1,
+//             'name' => 'Producte 1',
+//             'description' => 'Descripció del producte 1',
+//             'price' => 10.00,
+//             'image'=> 'sneaker01.jpg'
+//         ];
+//     $product->create($prod);
+    
+// }
+
+
 if (!isset($_SESSION['products'])) {
     $_SESSION['products'] = [
         [
@@ -117,7 +133,14 @@ if (!isset($_SESSION['products'])) {
             'image'=> 'sneaker09.jpg'
         ]
     ];
+
+    foreach ($_SESSION['products'] as $product) {
+        $prod = new Producte();
+        $prod->create($product);
+    };
     
 }
+
+
 
 

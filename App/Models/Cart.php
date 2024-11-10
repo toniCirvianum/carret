@@ -9,7 +9,23 @@ class Cart extends Orm {
         if (!isset($_SESSION['id_cart'])) {
             $_SESSION['id_cart'] = 0;
         }
+        // $this->createTable();
     }
+
+    // public function createTable() {
+    //     $sql = 'CREATE TABLE IF NOT EXISTS cart(
+    //         id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    //         product_id INT NOT NULL,
+    //         name VARCHAR(250) NOT NULL,
+    //         description VARCHAR(250) NOT NULL,
+    //         price DECIMAL(10, 2) NOT NULL,
+    //         image VARCHAR(250) NOT NULL,
+    //         qty INT NOT NULL,
+    //         created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    //         modified_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    //         ) ENGINE = InnoDB;';
+    //     $this->queryDataBase($sql);
+    // }
 
     // Afegim productes
     public function add_product($product) {
@@ -28,7 +44,10 @@ class Cart extends Orm {
 
         }
 
+    }
 
+    public function get_cart() {
+        return $_SESSION['cart'];
     }
 
     // Calcula el total
@@ -50,13 +69,18 @@ class Cart extends Orm {
 
     public function update_qty($id, $qty) {
         $_SESSION['cart'][$id]['qty'] += $qty;
+        $product['qty'] = $_SESSION['cart'][$id]['qty'];
         if ($_SESSION['cart'][$id]['qty'] <= 0) {
             $this->remove_product($id);
+
         }
     }
 
     public function get_cart_items() {
         $items = 0;
+        if (!isset($_SESSION['cart'])) {
+            return 0;
+        }
         foreach ($_SESSION['cart'] as $product) {
             $items += $product['qty'];
         }   

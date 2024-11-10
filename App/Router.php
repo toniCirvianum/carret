@@ -18,7 +18,7 @@ class Router
     {
         $url_array = explode('/', $_SERVER['REQUEST_URI']); //guardem la url en un array
 
-        $this->controller = !empty($url_array[1]) ? $url_array[1] : 'home';
+        $this->controller = !empty($url_array[1]) ? $url_array[1] : 'init';
         $this->controller = $this->controller . "Controller"; //gaurdem el nom del controller
         $controllerPath = "App/Controllers/" . $this->controller . ".php"; //guardem la ruta del controller
 
