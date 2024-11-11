@@ -9,7 +9,7 @@ class User extends Orm
     {
         parent::__construct('users');
         if (!isset($_SESSION['id_user'])) {
-            $_SESSION['id_user'] = 1;
+            $_SESSION['id_user'] = 2;
         }
         $this->createTable();
     }
